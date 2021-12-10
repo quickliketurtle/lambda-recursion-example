@@ -1,0 +1,25 @@
+service: lambda-recursion
+
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-west-2'}
+  lambdaHashingVersion: 20201221
+  iam:
+    role:
+      statements:
+        - Effect: 'Allow'
+          Action:
+            - 'lambda:InvokeFunction'
+          Resource: '*' # BAD, Be more specific
+
+package:
+  patterns:
+    - '!node_modules/aws-sdk/**/*'
+
+functions:
+  doIt:
+    handler: index.handler
